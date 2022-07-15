@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+    <h1 align=center class="">{{user.user_name}}'s profile</h1>
+</div>
+
+<div class="row">
+    <div class="col-4">
+        <div class="card" style="width: 18rem;">
+            <img src="{{user.image.url}}" class="card-img-top" alt="">
+            <div class="card-body">
+                <h5 class="card-title">Username: {{user.user_name}}</h5>
+                <p class="card-text">
+                    Points: {{user.points}}<br>
+                    Rank: {{user.rank}} <br>   
+                    Followers: {{user.followers.count}}<br>
+                    Following: {{user.following.count}}<br>
+                </p>
+              
+            </div>
+        </div>
+
+
+    </div>
+    <div class="col-8">
+        <!-- Outer card -->
+        
+            <div class="card-body">
+                <!-- Inner card / articles container -->
+                <div class="card" style="width: 80%">
+                    <form class="" action="." method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!-- <div class="field">
+                          <p class="control">
+                            
+                            {{ user_form.user_name}}
+                          </p>
+                        </div>
+                        <div class="field">
+                          <p class="control">
+                            
+                            {{ user_form.email}}
+                            
+                          </p>
+                        </div> -->
+                        {{user_form.as_p}}
+                        <input type="submit" value="Save Profile" class="btn btn-primary">
+                    </form>
+                </div> <!-- End of Inner card -->
+                
+            </div>
+        </div> <!-- End of outer card -->
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %}

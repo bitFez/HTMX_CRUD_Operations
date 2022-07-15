@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="row ">
+        <div class="col-7">
+            <div class="card text-bg-warning mb-3" style="width: 100%;">
+                <div class="card-body">
+                  <h5 class="card-title">Check in Form</h5>
+                  <p class="card-text"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card text-bg-light mb-3" style="width: 100%;">
+                <div class="card-body">
+                    <h1>{{days}}</h1>
+                  <h4>Subscription Left</h4>
+                  <a href="" class="btn btn-secondary">Renew</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

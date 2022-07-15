@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+    <h1 align=center class="">{{user.user_name}}'s profile</h1>
+</div>
+
+<div class="row">
+    <div class="col-4">
+        <div class="card" style="width: 18rem;">
+            <img src="{{user.image.url}}" class="card-img-top" alt="">
+            <div class="card-body">
+                <h5 class="card-title">Username: {{user.user_name}}</h5>
+                <p class="card-text">
+                    Points: {{user.points}}<br>
+                    Rank: {{user.rank}} <br>   
+                    Followers: {{user.followers.count}}<br>
+                    Following: {{user.following.count}}<br>
+                </p>
+                
+                {% if user == request.user and request.user.is_authenticated or request.user.is_staff %}
+                    <a href="{% url 'profiles:edit_profile' %}" class="btn btn-warning">Edit Profile</a>
+                {% else %}
+                    <a href="#" class="btn btn-success">Follow {{user.user_name}}</a>
+                {% endif %}
+            </div>
+        </div>
+
+
+    </div>
+    <div class="col-8">
+        <!-- Outer card -->
+        <div class="card">
+            <div class="card-body">
+                <!-- Inner card / articles container -->
+                <div class="card" style="width: 18rem;">
+                    <div class="card-header">
+                      Published Articles
+                    </div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">An item</li>
+                      
+                    </ul>
+                </div> <!-- End of Inner card -->
+                <hr>
+                <!-- Inner card / Questions Asked -->
+                <div class="card" style="width: 18rem;">
+                    <div class="card-header">
+                        Questions Asked
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">An item</li>
+                        
+                    </ul>
+                </div> <!-- End of Questions Inner card -->
+                <hr>
+                <!-- Inner card / Questions Answered -->
+                <div class="card" style="width: 18rem;">
+                    <div class="card-header">
+                        Questions Answered
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">An item</li>
+                        
+                    </ul>
+                </div> <!-- End of Questions answered Inner card -->
+            
+            </div>
+        </div> <!-- End of outer card -->
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %}
