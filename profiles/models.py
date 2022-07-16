@@ -74,7 +74,7 @@ CEREMONY_TYPES = (
 
 class CeremonyChoices(models.Model):
     ceremony = models.CharField(max_length=300)
-    has_facilitated = models.BooleanField(default=False)
+    #has_facilitated = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Ceremony Choice"
@@ -85,8 +85,8 @@ class CeremonyChoices(models.Model):
 
 class Ceremonies(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    cer_date = models.DateTimeField(blank=True)
-    ceremonies = models.ManyToManyField(CeremonyChoices)
+    cer_date = models.DateTimeField(verbose_name="Date of Ceremony")
+    ceremonies = models.ManyToManyField(CeremonyChoices, verbose_name="Ceremonies")
     
     class Meta:
         ordering = ["-cer_date"]

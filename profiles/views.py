@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from. forms import UserEditForm, CeremonyForm
-from .models import UserProfile
+from .models import UserProfile, Ceremonies
 # Create your views here.
 
 @login_required(login_url='accounts/login')
@@ -23,11 +23,41 @@ def home(request):
     context = {'user': user, 'days':days, 'form':form}
     return render(request, 'profiles/home.html', context)
 
+
+@login_required(login_url='accounts/login')
+def cerListView(request):
+    form = CeremonyForm()
+    user = get_object_or_404(UserProfile, pk=request.user.pk)
+    cerList = Ceremonies.objects.filter(user=request.user)[0:7]
+
+    context = {'user': user, 'cerList':cerList, 'form':form}
+    return render(request, 'profiles/ceremonies_listview.html', context)
+
+
 def daily_checkin(request):
     user = get_object_or_404(UserProfile, request.user)
 
     context = {'user': user,}
     return render(request, 'profiles/dashboard.html', context)
+
+
+@login_required
+def add_ceremony(request):
+    user = get_object_or_404(UserProfile, pk=request.user.pk)
+    
+    if request.method == 'POST':
+        form = CeremonyForm(data=request.POST or None,instance=request.user)
+    
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('profiles:edit_profile'))
+    else:
+        form = CeremonyForm(instance=request.user)
+    context = {
+        'user':user, 
+        'form':form,
+        }
+    return render(request, 'profiles/edit_profile.html', context)
 
 
 def profile_detail(request, pk):
