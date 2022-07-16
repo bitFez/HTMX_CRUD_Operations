@@ -6,10 +6,13 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-from. forms import UserEditForm
+from. forms import UserEditForm, CeremonyForm
 from .models import UserProfile
 # Create your views here.
+
+@login_required(login_url='accounts/login')
 def home(request):
+    form = CeremonyForm()
     user = get_object_or_404(UserProfile, pk=request.user.pk)
     def days_until(date):
         delta = datetime.date(date) - datetime.now().date()
@@ -17,7 +20,7 @@ def home(request):
     d1 = user.subs_end_date
     days = days_until(d1)
         
-    context = {'user': user, 'days':days}
+    context = {'user': user, 'days':days, 'form':form}
     return render(request, 'profiles/home.html', context)
 
 def daily_checkin(request):
