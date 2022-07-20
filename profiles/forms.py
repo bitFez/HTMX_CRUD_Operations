@@ -1,28 +1,31 @@
 from dataclasses import fields
-from django.forms import ModelForm,widgets
-from django.contrib.auth.forms import UserCreationForm
+from django.forms import widgets
 
-from .models import UserProfile, Ceremonies, CeremonyChoices
+
+from .models import UserProfile, Ceremonies, CEREMONY_TYPES
+from django.urls import reverse_lazy
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 from django import forms
 
 class CeremonyForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        # self.helper.form_method = 'POST'
+        # self.helper.form_action = reverse_lazy('profiles:cerlistview')
+        # self.helper.add_input(Submit('submit', 'Submit'))
+
+
+    cer_date = forms.DateField(widget=forms.DateInput(attrs={'type':'date'}, format={'%d-%m-%Y'}))
+    ceremonies = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(), choices=CEREMONY_TYPES)#ModelMultipleChoiceField(queryset=CeremonyChoices.objects.all(), widget=forms.CheckboxSelectMultiple(attrs={'placeholder': 'Choose Ceremonies'}))
+
     class Meta:
         model = Ceremonies
-        fields = ["cer_date", "ceremonies"]
-        labels = {
-            'Choose ceremony date': 'Ceremonies Attended',
-        }
-        widgets = {
-            'cer_date': forms.DateInput(
-        format=('%d-%m-%Y'),
-        attrs={'class': 'form-control', 
-               'placeholder': 'Select a date',
-               'type': 'date',
-               'label':"Choose a date"
-              })
-        }
-    cer_date = forms.DateInput()
-    ceremonies = forms.ModelMultipleChoiceField(queryset=CeremonyChoices.objects.all(), widget=forms.CheckboxSelectMultiple(attrs={'placeholder': 'Choose Ceremonies'}))
+        fields = ("user","cer_date", "ceremonies")
+
+
 
 
 class UserEditForm(forms.ModelForm):

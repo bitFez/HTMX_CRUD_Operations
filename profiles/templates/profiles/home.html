@@ -10,12 +10,12 @@
                 <div class="card-body">
                   <h5 class="card-title">Check in Form</h5>
                   <p class="card-text">
-                    <form method=".">
+                    <form method="POST" action="{% url 'profiles:add_cer' %}">
                         {% csrf_token %}
-                        {{ form |crispy}}
+                        {{form | crispy }}
                     <button class="btn btn-success" type="submit">Save</button>
                     </form>
-
+                    
                   </p>
                 </div>
             </div>

@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from . models import UserProfile, Ceremonies, CeremonyChoices
+from . forms import CeremonyForm
+from . models import UserProfile, Ceremonies, CEREMONY_TYPES
 # Register your models here.
 
 class UserAdminConfig(UserAdmin):
@@ -27,15 +28,19 @@ class UserAdminConfig(UserAdmin):
             'is_active', 'is_staff')}
          ),
     )
-class CeremonyChoicesAdmin(admin.ModelAdmin):
-    model = CeremonyChoices
+# class CeremonyChoicesAdmin(admin.ModelAdmin):
+#     model = CeremonyChoices
 
 class CeremoniesAdmin(admin.ModelAdmin):
-    model = Ceremonies
-    search_fields = ('cer_date', 'user',)
-    ordering = ('-cer_date',)
-    list_display = ('cer_date', 'user',)
+    form = CeremonyForm
+    # model = Ceremonies
+    # search_fields = ('cer_date', 'user',)
+    # ordering = ('-cer_date',)
+    list_display = ('cer_date', 'user','ceremonies')
+    # formfield_overrides = {
+    #     Ceremonies.ceremonies: {'widget': forms.CheckboxSelectMultiple(choices=CEREMONY_TYPES)},
+    # }
 
-admin.site.register(CeremonyChoices, CeremonyChoicesAdmin)
+#admin.site.register(CeremonyChoices, CeremonyChoicesAdmin)
 admin.site.register(UserProfile, UserAdminConfig)
 admin.site.register(Ceremonies, CeremoniesAdmin)

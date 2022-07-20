@@ -10,7 +10,7 @@
                 <div class="card-body">
                   <h5 class="card-title">Check in Form</h5>
                   <p class="card-text">
-                    <form method=".">
+                    <form method="POST" action="{% url 'profiles:add_cer' %}">
                         {% csrf_token %}
                         {{ form |crispy}}
                     <button class="btn btn-success" type="submit">Save</button>
@@ -23,11 +23,32 @@
         
     </div>
     <div class="row">
-        <ul class="list-group">
-            {% for item in cerList %}
-            <li class="list-group-item">{{item}}</li>
-            {% endfor %}
-          </ul>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col" class="text-center">Date</th>
+                <th scope="col" class="text-center">Daily Scrum</th>
+                <th scope="col" class="text-center">Retrospective</th>
+                <th scope="col" class="text-center">Sprint Planning</th>
+                <th scope="col" class="text-center">Backlog Refinement</th>
+                <th scope="col" class="text-center">Review</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for cer in cerList %}
+                <tr>
+                    <td>{{cer.cer_date|date:"d-m-y"}}</td> 
+                    <td class="text-center">{% if "DS" in cer.split_ceremonies %}<i class="fa-solid fa-circle-check"></i>{% endif %}</td>
+                    <td class="text-center">{% if " SRET" in cer.split_ceremonies %}<i class="fa-solid fa-circle-check"></i>{% endif %}</td>
+                    <td class="text-center">{% if ' SP' in cer.split_ceremonies %}<i class="fa-solid fa-circle-check"></i>{% endif %}</td>
+                    <td class="text-center">{% if " BLR" in cer.split_ceremonies %}<i class="fa-solid fa-circle-check"></i>{% endif %}</td>
+                    <td class="text-center">{% if " SR" in cer.split_ceremonies %}<i class="fa-solid fa-circle-check"></i>{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tr>
+            </tbody>
+          </table>
+        
     </div>
 
 

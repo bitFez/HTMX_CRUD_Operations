@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     # add ons
     'crispy_forms',
     "crispy_bootstrap5",
+    'fontawesomefree',
 
     # My apps
     'profiles',

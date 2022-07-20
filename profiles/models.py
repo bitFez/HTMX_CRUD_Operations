@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as gtl
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from datetime import date
 from django.urls import reverse
+import re
 
 # Customer user manager is used to create an extended user profile other than the standard one Django has built in
 class CustomAccountManager(BaseUserManager):
@@ -72,21 +73,21 @@ CEREMONY_TYPES = (
         ('BLR', 'Backlog Refinement'),
     )
 
-class CeremonyChoices(models.Model):
-    ceremony = models.CharField(max_length=300)
-    #has_facilitated = models.BooleanField(default=False)
+# class CeremonyChoices(models.Model):
+#     ceremony = models.CharField(max_length=300)
+#     #has_facilitated = models.BooleanField(default=False)
 
-    class Meta:
-        verbose_name = "Ceremony Choice"
-        verbose_name_plural = "Ceremony Choices"
+#     class Meta:
+#         verbose_name = "Ceremony Choice"
+#         verbose_name_plural = "Ceremony Choices"
 
-    def __str__(self):
-        return self.ceremony
+#     def __str__(self):
+#         return self.ceremony
 
 class Ceremonies(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     cer_date = models.DateTimeField(verbose_name="Date of Ceremony")
-    ceremonies = models.ManyToManyField(CeremonyChoices, verbose_name="Ceremonies")
+    ceremonies = models.CharField(max_length=50, help_text="You can select more than 1 option") #ManyToManyField(CeremonyChoices, verbose_name="Ceremonies")
     
     class Meta:
         ordering = ["-cer_date"]
@@ -95,4 +96,9 @@ class Ceremonies(models.Model):
 
     def __str__(self):
         return f"{self.user.first_name} - {self.cer_date}"
-    
+
+    def split_ceremonies(self):
+        a = self.ceremonies
+        a = re.sub(r'[\]\[\']', '', a)
+        a = a.split(',')
+        return a
