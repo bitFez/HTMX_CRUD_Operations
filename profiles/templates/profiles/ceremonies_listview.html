@@ -3,7 +3,15 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
+  {% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %} 
+          <div class="alert alert-danger">
+                <strong>{{ form.error|escape }}</strong>
+          </div>
+        {% endfor %}
+    {% endfor %}
+  {% endif %}
     <div class="row ">
         <div class="col">
             <div class="card text-bg-warning mb-3" style="width: 100%;">
@@ -23,7 +31,7 @@
         
     </div>
     <div class="row">
-        <table class="table">
+        <table class="table table-striped">
             <thead>
               <tr>
                 <th scope="col" class="text-center">Date</th>
@@ -43,6 +51,7 @@
                     <td class="text-center">{% if ' SP' in cer.split_ceremonies %}<i class="fa-solid fa-circle-check"></i>{% endif %}</td>
                     <td class="text-center">{% if " BLR" in cer.split_ceremonies %}<i class="fa-solid fa-circle-check"></i>{% endif %}</td>
                     <td class="text-center">{% if " SR" in cer.split_ceremonies %}<i class="fa-solid fa-circle-check"></i>{% endif %}</td>
+                    <td class="text-center"> <a class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a> </td>
                 </tr>
                 {% endfor %}
             </tr>

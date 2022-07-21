@@ -17,7 +17,6 @@ class CeremonyForm(forms.ModelForm):
         # self.helper.form_action = reverse_lazy('profiles:cerlistview')
         # self.helper.add_input(Submit('submit', 'Submit'))
 
-
     cer_date = forms.DateField(widget=forms.DateInput(attrs={'type':'date'}, format={'%d-%m-%Y'}))
     ceremonies = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(), choices=CEREMONY_TYPES)#ModelMultipleChoiceField(queryset=CeremonyChoices.objects.all(), widget=forms.CheckboxSelectMultiple(attrs={'placeholder': 'Choose Ceremonies'}))
 

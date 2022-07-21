@@ -57,14 +57,30 @@ def add_ceremony(request):
     
     if request.method == 'POST':
         form = CeremonyForm(request.POST)
-
+        errors = ""
         if form.is_valid():
-            form.save(commit=False)
-            form.user = request.user.id
-            form.save()
-            return redirect('profiles:cerlistview') #return HttpResponseRedirect(reverse(''))
+            data = form.cleaned_data
+            obj, created = Ceremonies.objects.get_or_create(
+                user=data['user'], cer_date=data['cer_date'],
+                defaults={'ceremonies': data['ceremonies']},
+            )
+            # try:
+            #     obj = Ceremonies.objects.get(user=data['user'], cer_date=data['cer_date'])
+            # except Ceremonies.DoesNotExist:
+            #     obj = Ceremonies(user=data['user'], cer_date=data['cer_date'], ceremonies=data['ceremonies'])
+            #     obj.save()
+            context = {'user':user,'form':form,}
+            return redirect('profiles:cerlistview')
+            # try:
+            #     entry = Ceremonies.objects.get(user=data['user'], cer_date=data['cer_date'])
+            # except Ceremonies.DoesNotExist:    
+            #     form.save(commit=False)
+            #     form.user = request.user.id
+            #     form.save()
+            #     return redirect('profiles:cerlistview') #return HttpResponseRedirect(reverse(''))
         else:
             form = CeremonyForm(instance=request.user)
+            errors = "Your form had an error. Either the form was incomplete or you tried to add a date that has already been added."
         context = {
             'user':user, 
             'form':form,
